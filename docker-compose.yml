@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: ${APP_NAME}-container
+    build:
+      context: .
+    image: ${APP_NAME}:latest
+    command: sh -c "make run.app"
+    volumes:
+      - ./logs:/app/logs
+      - ./database:/app/database
+    ports:
+      - "8080:80"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:80"]
+        interval: 1m30s
+        timeout: 30s
+        retries: 5
+        start_period: 30s
